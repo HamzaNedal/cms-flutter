@@ -16,6 +16,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
   List<Data> postsData = [];
   Meta meta = Meta();
   int initialScrollIndex = 0;
+  int currentIndexBottomNavigationBar = 0;
   bool isRefreshingPage = false;
   bool isLoadingMorePosts = false;
   // GetPosts mergepost = GetPosts();
@@ -30,9 +31,9 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
       yield PostsLoadingState();
       final data = await post_repo.getPosts(1);
       postsData.clear();
-      postsData.addAll(data[0]['data']);
-      meta = data[0]['meta'];
       try {
+        postsData.addAll(data[0]['data']);
+        meta = data[0]['meta'];
         if (!data[0]['errors']) {
           yield PostsLoadedState(data: postsData, meta: meta);
         }
@@ -64,7 +65,24 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
         yield PostsErrorState(message: e.toString());
       }
     } else if (event is FetchPostsBackEvent) {
+      // print(state);
       yield PostsLoadedState(data: postsData, meta: meta);
+    } else if (event is ClickBottomNavigationBarEvent) {
+      if (event.index == 0) {
+        currentIndexBottomNavigationBar = 0;
+        if (postsData.isEmpty) {
+          yield PostsInitial();
+        } else {
+          yield PostsLoadedState(data: postsData, meta: meta);
+        }
+      } else if (event.index == 1) {
+        currentIndexBottomNavigationBar = 1;
+        yield GoToPofileState();
+      } else {
+        currentIndexBottomNavigationBar = 2;
+        yield PostsLoadingState();
+      }
+      // yield ClickBottomNavigationBarState(index: event.index);
     }
   }
 }

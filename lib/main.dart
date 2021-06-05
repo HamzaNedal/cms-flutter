@@ -1,5 +1,6 @@
 import 'package:cms/blocs/auth/auth_bloc.dart';
 import 'package:cms/blocs/posts/posts_bloc.dart';
+import 'package:cms/blocs/profile/profile_bloc.dart';
 import 'package:cms/data/repository/auth_repo.dart';
 import 'package:cms/data/repository/comment_repo.dart';
 import 'package:cms/data/repository/post_repo.dart';
@@ -7,6 +8,7 @@ import 'package:cms/ui/Auth/signup.dart';
 import 'package:cms/ui/Auth/login.dart';
 import 'package:cms/ui/home.dart';
 import 'package:cms/ui/post_comments.dart';
+import 'package:cms/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,6 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Future getAccessToken() => Future.delayed(Duration(seconds: 1), () async {
           var pref = await SharedPreferences.getInstance();
+          // pref.clear();
           return pref.get('access_token');
         });
     return MultiBlocProvider(
@@ -31,6 +34,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<PostsBloc>(
           create: (BuildContext context) =>
               PostsBloc(PostsImp(), CommentsImp())..add(FetchPostsEvent()),
+        ),
+        BlocProvider<ProfileBloc>(
+          create: (BuildContext context) => ProfileBloc()..add(GetUserInfo()),
         ),
       ],
       child: MaterialApp(
@@ -60,7 +66,7 @@ class MyApp extends StatelessWidget {
               } else {
                 return Center(
                   child: Container(
-                    child: CircularProgressIndicator(),
+                    child: Loading(),
                   ),
                 );
               }

@@ -16,10 +16,12 @@ class PostCommentsScreen extends StatelessWidget {
             icon: Icon(Icons.arrow_back),
             onPressed: () {
               BlocProvider.of<PostsBloc>(context).add(FetchPostsBackEvent());
+              // print(Navigator.of(context).pop());
+
               Navigator.of(context).pop();
             },
           ),
-          backgroundColor: kMainColor,
+          backgroundColor: kAppBarColor,
           title: const Text('Comments'),
         ),
         body: BlocBuilder<PostsBloc, PostsState>(builder: (context, state) {
@@ -78,25 +80,33 @@ class PostCommentsScreen extends StatelessWidget {
                 Expanded(
                     flex: 1,
                     child: Container(
+                      color: kAppBarColor,
                       child: Row(
                         children: <Widget>[
                           Expanded(
                             flex: 6,
-                            child: TextField(
-                              keyboardType: TextInputType.multiline,
-                              maxLines: 5,
-                              minLines: 1,
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                              decoration: InputDecoration(
-                                disabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
+                            child: SingleChildScrollView(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: TextFormField(
+                                  maxLength: 500,
+                                  keyboardType: TextInputType.multiline,
+                                  maxLines: 5,
+                                  minLines: 1,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                  decoration: InputDecoration(
+                                    disabledBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.white),
+                                    ),
+                                    fillColor: Colors.white,
+                                    hintStyle: TextStyle(
+                                        color: Colors.white, fontSize: 15),
+                                    hintText: "Comment",
+                                  ),
                                 ),
-                                fillColor: Colors.white,
-                                hintStyle: TextStyle(
-                                    color: Colors.white, fontSize: 15),
-                                hintText: "Comment",
                               ),
                             ),
                           ),
@@ -104,9 +114,11 @@ class PostCommentsScreen extends StatelessWidget {
                               flex: 1,
                               child: IconButton(
                                   color: Colors.white,
-                                  // focusColor: Colors.white,
+                                  focusColor: Colors.white,
                                   icon: Icon(Icons.send_rounded),
-                                  onPressed: () {}))
+                                  onPressed: () {
+                                    print('x');
+                                  }))
                         ],
                       ),
                     ))

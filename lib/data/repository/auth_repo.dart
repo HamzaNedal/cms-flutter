@@ -22,7 +22,11 @@ class AuthRepositoryImpl extends AuthRepository {
         await post('$kHost/api/v1/login', headers: headers, body: inputField);
     print(response.body);
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      var data = json.decode(response.body);
+      if (data['error']) {
+        return 'Email or Password incorrect';
+      }
+      return data;
     } else {
       return 'Email or Password incorrect';
     }

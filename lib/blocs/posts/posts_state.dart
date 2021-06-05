@@ -32,7 +32,14 @@ class PostsErrorState extends PostsState {
 
 class PostsCommentsLoadingState extends PostsState {}
 
+class GoToPofileState extends PostsState {}
+
 class PostsCommentsLoadedState extends PostsState {
   GetPostCommets comments;
   PostsCommentsLoadedState({this.comments});
 }
+
+// class ClickBottomNavigationBarState extends PostsState {
+//   final int index;
+//   ClickBottomNavigationBarState({this.index});
+// }

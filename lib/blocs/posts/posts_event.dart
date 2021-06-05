@@ -11,6 +11,11 @@ class FetchPostsEvent extends PostsEvent {}
 
 class FetchPostsWhenRefeshEvent extends PostsEvent {}
 
+class ClickBottomNavigationBarEvent extends PostsEvent {
+  final int index;
+  ClickBottomNavigationBarEvent({this.index});
+}
+
 class FetchPostsBackEvent extends PostsEvent {}
 
 class FetchMorePostsEvent extends PostsEvent {

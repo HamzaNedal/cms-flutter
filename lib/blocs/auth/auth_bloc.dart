@@ -22,6 +22,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       var data = await repo.getUserToken(event.email, event.password);
       if (data != 'Email or Password incorrect') {
         await pref.setString('access_token', data['access_token']);
+        await pref.setString('username', data['username']);
+        await pref.setString('name', data['name']);
+        await pref.setString('email', data['email']);
+        await pref.setString('image', data['image']);
         yield AuthLoginSuccessState();
       } else {
         yield AuthLoginErrorState(messge: data);
